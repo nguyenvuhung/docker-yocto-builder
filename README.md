@@ -1,7 +1,8 @@
 docker-yocto-builder: Docker container to make enviroment to build yocto
 
 # How to build and run docker on Host computer
-On host computer: create directory : yocto/mediatek-bsp and yocto/mediatek_output
+On host computer: create directory : yocto/mediatek-bsp and yocto/mediatek_output 
+
 #mkdir -p yocto/mediatek-bsp
 #mkdir -p yocto/mediatek_output
 
