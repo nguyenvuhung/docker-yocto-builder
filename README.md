@@ -1,4 +1,3 @@
-# docker-yocto-builder
 docker-yocto-builder: Docker container to make enviroment to build yocto
 
 # How to build and run docker on Host computer
