@@ -2,13 +2,13 @@
 
 # In any directory on the docker host, perform the following actions:
 #   * Copy this Dockerfile in the directory.
-#   * Create input and output directories: mkdir -p yocto/output yocto/input
+#   * Create input and output directories: mkdir -p $PWD/mediatek-bsp and $PWD/mediatek_output
 #   * Build the Docker image with the following command:
 #     docker build --build-arg "host_uid=$(id -u)" --build-arg "host_gid=$(id -g)" \
 #         --tag "vuhungkt18/docker-yocto-builder:latest" .
 #   * Run the Docker image, which in turn runs the Yocto and which produces the Linux rootfs,
 #     with the following command:
-#     docker run -it --rm -v $PWD/yocto/output:/home/$USER_NAME/yocto/mediatek-bsp/build vuhungkt18/docker-yocto-builder:latest
+#     docker run -it --rm -v $PWD/mediatek_output:/home/build/yocto/mediatek-bsp/build vuhungkt18/docker-yocto-builder:latest
 
 # Use Ubuntu 16.04 LTS as the basis for the Docker image.
 FROM ubuntu:16.04
