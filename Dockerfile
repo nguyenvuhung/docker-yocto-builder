@@ -4,11 +4,11 @@
 #   * Copy this Dockerfile in the directory.
 #   * Create input and output directories: mkdir -p yocto/output yocto/input
 #   * Build the Docker image with the following command:
-#     docker build --no-cache --build-arg "host_uid=$(id -u)" --build-arg "host_gid=$(id -g)" \
-#         --tag "cuteradio-image:latest" .
+#     docker build --build-arg "host_uid=$(id -u)" --build-arg "host_gid=$(id -g)" \
+#         --tag "vuhungkt18/docker-yocto-builder:latest" .
 #   * Run the Docker image, which in turn runs the Yocto and which produces the Linux rootfs,
 #     with the following command:
-#     docker run -it --rm -v $PWD/yocto/output:/home/cuteradio/yocto/output cuteradio-image:latest
+#     docker run -it --rm -v $PWD/yocto/output:/home/$USER_NAME/yocto/mediatek-bsp/build vuhungkt18/docker-yocto-builder:latest
 
 # Use Ubuntu 16.04 LTS as the basis for the Docker image.
 FROM ubuntu:16.04
@@ -38,6 +38,7 @@ RUN git config --global user.name "Nguyen Vu Hung"
 
 ENV USER_NAME build
 ENV PROJECT mediatek
+ENV IMAGE_NAME qt5-image-demo-swu
 
 # The running container writes all the build artefacts to a host directory (outside the container).
 # The container can only write files to host directories, if it uses the same user ID and
@@ -62,17 +63,14 @@ ENV MEDIATEK_BRANCH "zeus_mediatek"
 # Create the directory structure for the Yocto build in the container. The lowest two directory
 # levels must be the same as on the host.
 ENV MEDIATEK_PATH /home/$USER_NAME/yocto/mediatek-bsp
-ENV BUILD_OUTPUT_DIR /home/$USER_NAME/yocto/mediatek-bsp/build
+ENV BUILD_OUTPUT_DIR $MEDIATEK_PATH/build
 RUN mkdir -p $MEDIATEK_PATH $BUILD_OUTPUT_DIR
 
 # Clone the repositories of the meta layers into the directory $BUILD_INPUT_DIR/sources/cuteradio.
 WORKDIR $MEDIATEK_PATH
 
 RUN repo init -u https://github.com/nguyenvuhung/bbb-community-bsp-platform -b ${MEDIATEK_BRANCH}
-RUN repo sync -j8
+RUN repo sync -j$(grep -c ^processor /proc/cpuinfo)
 ENV MACHINE mt7623-bpi-r2
 ENV DISTRO poky
-CMD source $MEDIATEK_PATH/setup-environment build && bitbake qt5-image-demo-swu
-
-
-
+CMD source $MEDIATEK_PATH/setup-environment build && bitbake $IMAGE_NAME
