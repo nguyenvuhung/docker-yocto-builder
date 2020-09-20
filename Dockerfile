@@ -69,7 +69,7 @@ RUN mkdir -p $MEDIATEK_PATH $BUILD_OUTPUT_DIR
 # Clone the repositories of the meta layers into the directory $BUILD_INPUT_DIR/sources/cuteradio.
 WORKDIR $MEDIATEK_PATH
 
-RUN repo init -u https://github.com/nguyenvuhung/bbb-community-bsp-platform -b ${MEDIATEK_BRANCH}
+RUN repo init -u https://github.com/nguyenvuhung/yocto-bsp-platform -b ${MEDIATEK_BRANCH}
 RUN repo sync -j$(grep -c ^processor /proc/cpuinfo)
 ENV MACHINE mt7623-bpi-r2
 ENV DISTRO poky
